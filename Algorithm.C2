@@ -1,0 +1,109 @@
+Number of single cycle components in an undirected graph
+Implantation of C++ program about the 20 test cases
+
+// CPP program to find single cycle components 
+// in a graph. 
+#include <bits/stdc++.h> 
+using namespace std; 
+
+const int N = 100000; 
+  
+// degree of all the vertices 
+int degree [N]; 
+ 
+// to keep track of all the vertices covered  
+// till now 
+bool found[N]; 
+  
+// all the vertices in a particular  
+// connected component of the graph 
+vector<int> curr_graph; 
+  
+// adjacency list 
+vector<int> adj_list[N]; 
+  
+// depth-first traversal to identify all the 
+// nodes in a particular connected graph  
+// component 
+void DFS(int v) 
+{ 
+    found[v] = true; 
+    curr_graph.push_back (v); 
+    for (int it: adj_list[v]) 
+        if (!found [it]) 
+            DFS(it); 
+} 
+  
+// function to add an edge in the graph 
+void addEdge (vector<int> adj_list[N], int src, 
+             int dest) 
+{ 
+    // for index decrement both src and dest. 
+    src--, dest--; 
+    adj_list[src].push_back(dest); 
+    adj_list[dest].push_back(src); 
+    degree[src]++; 
+    degree[dest]++; 
+} 
+  
+int countSingleCycles(int n, int m) 
+{ 
+    // count of cycle graph components 
+    int count = 0; 
+    for (int i = 0; i < n; ++i) { 
+        if (!found[i]) { 
+            curr_graph.clear(); 
+            DFS(i); 
+  
+            // traversing the nodes of the 
+            // current graph component 
+            int flag = 1; 
+            for (int v: curr_graph) { 
+                if (degree[v] == 2) 
+                    continue; 
+                else { 
+                    flag = 0; 
+                    break; 
+                } 
+            } 
+            if (flag == 1) { 
+                count++; 
+            } 
+        } 
+    } 
+    return (count); 
+} 
+  
+int main () 
+{ 
+    // n->number of vertices 
+    // m->number of edges 
+   // n->number of vertices 
+    // m->number of edges 
+    int n = 20, m = 19; 
+    addEdge(adj_list, 17, 15); 
+    addEdge(adj_list, 1, 8); 
+    addEdge(adj_list, 1, 12); 
+    addEdge(adj_list, 5, 11); 
+    addEdge(adj_list, 11, 9); 
+    addEdge(adj_list, 9, 15); 
+    addEdge(adj_list, 15, 5); 
+    addEdge(adj_list, 4, 13); 
+    addEdge(adj_list, 3, 13); 
+    addEdge(adj_list, 4, 3); 
+    addEdge(adj_list, 10, 16); 
+    addEdge(adj_list, 7, 10); 
+    addEdge(adj_list, 16, 17); 
+    addEdge(adj_list, 14, 3);
+    addEdge(adj_list, 14, 4);
+    addEdge(adj_list,17,  6);
+     addEdge(adj_list,18,  3);
+    addEdge(adj_list,19,  7);
+    addEdge(adj_list,7,  11);
+    addEdge(adj_list,20,  3);
+     
+    cout << countSingleCycles(n, m); 
+  
+    return 0; 
+
+} 
